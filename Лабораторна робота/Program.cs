@@ -7,7 +7,7 @@
             int valueNotebook = 1000;
             int valueSmartphone = 500;
             int valueTablet = 700;
-            int valueРeadphone = 400;
+            int valueHeadphone = 400;
             int valueTV = 1200;
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("=== Магазин електроніки ===");
@@ -15,7 +15,7 @@
             Console.WriteLine($"1. Ноутбук, {valueNotebook}$"); 
             Console.WriteLine($"2. Смартфон, {valueSmartphone}$");
             Console.WriteLine($"3. Планшет, {valueTablet}$");
-            Console.WriteLine($"4. Навушники, {valueРeadphone}$");
+            Console.WriteLine($"4. Навушники, {valueHeadphone}$");
             Console.WriteLine($"5. Телевізор, {valueTV} $");
 
             Console.Write("\nВиберіть кількість ноутбуків: ");
@@ -25,7 +25,7 @@
             Console.Write("Виберіть кількість планшетів: ");
             int countTablet = int.Parse(Console.ReadLine());
             Console.Write("Виберіть кількість навушників: ");
-            int countРeadphone = int.Parse(Console.ReadLine());
+            int countHeadphone = int.Parse(Console.ReadLine());
             Console.Write("Виберіть кількість телевізорів: ");
             int countTV = int.Parse(Console.ReadLine());
 
@@ -35,15 +35,15 @@
             Console.WriteLine($"Вартість смартфонів: {totalPriceSmartphone} $");
             int totalPriceTablet = valueTablet * countTablet;
             Console.WriteLine($"Вартість планшетів: {totalPriceTablet} $");
-            int totalPriceРeadphone = valueРeadphone * countРeadphone;
-            Console.WriteLine($"Вартість навушників: {totalPriceРeadphone} $");
+            int totalPriceHeadphone = valueHeadphone * countHeadphone;
+            Console.WriteLine($"Вартість навушників: {totalPriceHeadphone} $");
             int totalPriceTV = valueTV * countTV;
             Console.WriteLine($"Вартість телевізорів: {totalPriceTV} $");
 
             int totalPrice = totalPriceNotebook + 
                 totalPriceSmartphone + 
                 totalPriceTablet + 
-                totalPriceРeadphone + 
+                totalPriceHeadphone + 
                 totalPriceTV;
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"\nЗагальна вартість: {totalPrice} $");
@@ -69,7 +69,7 @@
             Console.WriteLine($"Ноутбуки: {countNotebook} шт. - {totalPriceNotebook} $");
             Console.WriteLine($"Смартфони: {countSmartphone} шт. - {totalPriceSmartphone} $");
             Console.WriteLine($"Планшети: {countTablet} шт. - {totalPriceTablet} $");
-            Console.WriteLine($"Навушники: {countРeadphone} шт. - {totalPriceРeadphone} $");
+            Console.WriteLine($"Навушники: {countHeadphone} шт. - {totalPriceHeadphone} $");
             Console.WriteLine($"Телевізори: {countTV} шт. - {totalPriceTV} $");
             Console.ResetColor();
 

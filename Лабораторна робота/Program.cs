@@ -1,11 +1,9 @@
 ﻿namespace electronics_store {
     internal class Program {
-        static bool EXIT = true;
         static void Main(string[] args) {
-            while (EXIT){
-                Console.Clear();
-                MainMenu();
-            }
+            
+            MainMenu();
+            
         }
         static double GetUserInput(string text = "Введіть число ") {
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -54,7 +52,6 @@
                     break;
                 case 3:
                     ShowActionsAndDiscounts();
-                    MainMenu();
                     break;
                 case 4:
                     ShowCustomerSupport();
@@ -62,11 +59,10 @@
                 case 5:
                     Console.WriteLine("Вихід з програми. До побачення!");
                     Console.ReadKey();
-                    EXIT = false;
+                    Environment.Exit(1);
                     break;
                 default:
                     Console.WriteLine("Невірний вибір. Будь ласка, спробуйте ще раз.");
-                    GetUserInput();
                     break;    
             }
         }

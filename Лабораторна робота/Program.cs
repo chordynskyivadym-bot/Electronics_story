@@ -63,6 +63,7 @@
                     break;
                 default:
                     Console.WriteLine("Невірний вибір. Будь ласка, спробуйте ще раз.");
+                    MainMenu();
                     break;    
             }
         }
@@ -116,6 +117,7 @@
                     break;
                 default:
                     Console.WriteLine("Невірний вибір. Будь ласка, спробуйте ще раз.");
+                    MainMenu();
                     return;
             }
         }
@@ -163,6 +165,7 @@
                     break;
                 default:
                     Console.WriteLine("Невірний вибір. Будь ласка, спробуйте ще раз.");
+                    MainMenu();
                     return;
             }
         }
@@ -177,6 +180,7 @@
             Console.WriteLine("====================================");
             Console.WriteLine("\nНатисніть будь-яку клавішу, щоб повернутись...");
             Console.ReadKey();
+            MainMenu();
         }
 
         static void OrderElectronics() {

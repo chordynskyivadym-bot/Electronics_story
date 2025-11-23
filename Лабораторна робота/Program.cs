@@ -1,126 +1,264 @@
-﻿namespace electronics_store {
+﻿
+using System.Text;
+
+namespace electronics_store {
     internal class Program {
+        static Dictionary<string, int> products = [];
+        private static Product p1, p2, p3, p4, p5;
         static void Main(string[] args) {
-            
+            Console.OutputEncoding = Encoding.UTF8;
+            Login();
             MainMenu();
-            
+
         }
-        static double GetUserInput(string text = "Введіть число ") {
+        static void Login() {
+            string correctUsername = "admin";
+            string correctPassword = "12345";
+            int attempts = 0;
+            int maxAttempts = 3;
+            do {
+                Console.Write("Введіть ваш логін: ");
+                string inputUsername = Console.ReadLine();
+                Console.Write("Введіть ваш пароль: ");
+                string inputPassword = Console.ReadLine();
+                if (inputUsername == correctUsername && inputPassword == correctPassword) {
+                    Console.WriteLine("Вхід успішний! Ласкаво просимо до магазину електроніки.");
+                    Console.ReadKey();
+                    return;
+                }
+                else {
+                    attempts++;
+                    Console.WriteLine($"Невірний логін або пароль. Спроба {attempts} з {maxAttempts}.");
+                }
+            } while (attempts < maxAttempts);
+            Console.WriteLine("Перевищено максимальну кількість спроб. Вихід з програми.");
+            Exit();
+        }
+        static double GetUserInput(string text = "") {
+            try {
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write(text + " ");
+                Console.WriteLine(text);
+                double choice = double.Parse(Console.ReadLine());
+                Console.ResetColor();
+                return choice;
+            }
+            catch (FormatException) {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Невірний формат вводу. Будь ласка, введіть число.");
+                Console.ResetColor();
+                return GetUserInput(text);
+            }
+        }
+        public static void AskForProduct() {
+            while (true) {
+                Console.Write("Введіть назву продукта: ");
+                string name = Console.ReadLine();
 
-                bool isNumber = Double.TryParse(Console.ReadLine(), out double choice);
+                double price = GetUserInput("Введіть ціну продукта");
 
-                if (!isNumber) {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Ви ввели не число!");
-                    Console.ResetColor();
-                    GetUserInput();
+                if (p1.IsEmpty()) {
+                    p1 = new Product(name, (int)price, 1, "Електроніка");
+                    products.Add(name, (int)price);
+                }
+                else if (p2.IsEmpty()) { 
+                    p2 = new Product(name, (int)price, 1, "Електроніка");
+                    products.Add(name, (int)price);
+                }
+                else if (p3.IsEmpty()) { 
+                    p3 = new Product(name, (int)price, 1, "Електроніка");
+                    products.Add(name, (int)price);
+                }
+                else if (p4.IsEmpty()) { 
+                    p4 = new Product(name, (int)price, 1, "Електроніка");
+                    products.Add(name, (int)price);
+                }
+                else if (p5.IsEmpty()) { 
+                    p5 = new Product(name, (int)price, 1, "Електроніка");
+                    products.Add(name, (int)price);
+                }
+                else {
+                    Console.WriteLine("Немає місця для продуктів");
+                    break;
                 }
 
+                Console.WriteLine("================================");
+                Console.WriteLine("Чи хочете додати ще один продукт 1 - Yes, 0 - No");
+                int choice = (int)GetUserInput();
+
+                if (choice == 1) {
+                    AskForProduct();
+                    break;
+                }
+                else if (choice == 0) {
+                    Console.WriteLine("Ваші продукти:");
+
+                    if (!p1.IsEmpty()) p1.ShowInfo();
+                    if (!p2.IsEmpty()) p2.ShowInfo();
+                    if (!p3.IsEmpty()) p3.ShowInfo();
+                    if (!p4.IsEmpty()) p4.ShowInfo();
+                    if (!p5.IsEmpty()) p5.ShowInfo();
+                    Console.WriteLine("Натисніть будь-яку кнопку, щоб продовжити");
+                    Console.ReadKey();
+                    break;
+                }
+            }
+        }
+
+        static void MainMenu() {
+            bool exit = true;
+            while (exit) {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("====================================");
+                Console.WriteLine("===========ГОЛОВНЕ МЕНЮ=============");
+                Console.WriteLine("====================================");
+                Console.WriteLine("1. Додати товари");
+                Console.WriteLine("2. Статистика");
+                Console.WriteLine("3. Оформити замовлення");
+                Console.WriteLine("4. Акції та знижки");
+                Console.WriteLine("5. Підтримка клієнтів");
+                Console.WriteLine("6. Вихід");
+                Console.WriteLine("====================================");
                 Console.ResetColor();
 
-                return choice;
-        }
-        static void MainMenu() {
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("====================================");
-            Console.WriteLine("===========ГОЛОВНЕ МЕНЮ=============");
-            Console.WriteLine("====================================");
-            Console.WriteLine("1. Товари");
-            Console.WriteLine("2. Оформити замовлення");
-            Console.WriteLine("3. Акції та знижки");
-            Console.WriteLine("4. Підтримка клієнтів");
-            Console.WriteLine("5. Вихід");
-            Console.WriteLine("====================================");
-            Console.ResetColor();
-
-            double choice = GetUserInput("Введіть число від 1-5 ");
-            switch (choice) {
-                case 1:
-                    Showproducts();
-                    Console.WriteLine("Натисніть будь-яку клавішу, щоб повернутися до головного меню.");
-                    Console.ReadKey();
-                    MainMenu();
-                    break;
-                case 2:
-                    OrderElectronics();
-                    Console.WriteLine("Натисніть будь-яку клавішу, щоб повернутися до головного меню.");
-                    Console.ReadKey();
-                    MainMenu();
-                    break;
-                case 3:
-                    ShowActionsAndDiscounts();
-                    break;
-                case 4:
-                    ShowCustomerSupport();
-                    break;
-                case 5:
-                    Console.WriteLine("Вихід з програми. До побачення!");
-                    Console.ReadKey();
-                    Environment.Exit(1);
-                    break;
-                default:
-                    Console.WriteLine("Невірний вибір. Будь ласка, спробуйте ще раз.");
-                    MainMenu();
-                    break;    
+                double choice = GetUserInput("Введіть число від 1-5 ");
+                switch (choice) {
+                    case 1: AskForProduct();
+                            MainMenu(); ; break;
+                    case 2: ShowStatistic();
+                            MainMenu(); break;
+                    case 3: OrderElectronics();
+                            MainMenu(); break;
+                    case 4: ShowActionsAndDiscounts();
+                            MainMenu(); break;
+                    case 5: ShowCustomerSupport();
+                            MainMenu(); break;
+                    case 6: exit = false;
+                            Exit(); break;
+                    default:
+                        Console.WriteLine("Невірний вибір. Будь ласка, спробуйте ще раз.");
+                        MainMenu();
+                        break;
+                }
             }
         }
-        static void Showproducts() {
+        static void ShowProducts() {
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("========= Наші товари =========");
-            Console.WriteLine("1. Ноутбук");
-            Console.WriteLine("2. Смартфон");
-            Console.WriteLine("3. Планшет");
-            Console.WriteLine("4. Навушники");
-            Console.WriteLine("5. Телевізор");
-            Console.WriteLine("6. Вийти у головне меню");
+            foreach (var product in products) {
+                Console.WriteLine($"Назва: {product.Key}, Ціна: {product.Value}$");
+            }
+            Console.WriteLine("\nНатисніть будь-яку клавішу, щоб повернутись...");
+            Console.ReadKey();
+        }
+        static void ShowStatistic() {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("========= Статистика =========");
+            Console.WriteLine("1. Подивитися продукти");
+            Console.WriteLine("2. Фінансовий звіт");
+            Console.WriteLine("3. Повернутись до головного меню");
             Console.WriteLine("================================");
-            Console.ResetColor();
-
-            double choice = GetUserInput("Введіть число від 1-6: ");
-
+            double choice = GetUserInput("Введіть число від 1-3: ");
             switch (choice) {
                 case 1:
-                    Console.WriteLine("Функція в розробці...");
-                    Console.WriteLine("Натисніть будь-яку клавішу, щоб повернутися до головного меню.");
-                    Console.ReadKey();
-                    MainMenu();
+                    Console.WriteLine($"Загальна кількість продуктів: {products.Count}");
+                    ShowProducts();
                     break;
                 case 2:
-                    Console.WriteLine("Функція в розробці...");
-                    Console.WriteLine("Натисніть будь-яку клавішу, щоб повернутися до головного меню.");
-                    Console.ReadKey();
-                    MainMenu();
+                    Financial();
                     break;
                 case 3:
-                    Console.WriteLine("Функція в розробці...");
-                    Console.WriteLine("Натисніть будь-яку клавішу, щоб повернутися до головного меню.");
-                    Console.ReadKey();
-                    MainMenu();
-                    break;
-                case 4:
-                    Console.WriteLine("Функція в розробці...");
-                    Console.WriteLine("Натисніть будь-яку клавішу, щоб повернутися до головного меню.");
-                    Console.ReadKey();
-                    MainMenu();
-                    break;
-                case 5:
-                    Console.WriteLine("Функція в розробці...");
-                    Console.WriteLine("Натисніть будь-яку клавішу, щоб повернутися до головного меню.");
-                    Console.ReadKey();
-                    MainMenu();
-                    break;
-                case 6:
-                    MainMenu();
-                    break;
-                default:
-                    Console.WriteLine("Невірний вибір. Будь ласка, спробуйте ще раз.");
                     MainMenu();
                     return;
+                default:
+                    Console.WriteLine("Невірний вибір. Будь ласка, спробуйте ще раз.");
+                    return;
             }
+            Console.ResetColor();
         }
+        static void Financial() {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("========= Фінансовий звіт =========");
+            if (products.Count == 0) {
+                Console.WriteLine("Дані відсутні.");
+                return;
+            }
+            Console.Clear();
+            int totalSum = 0;
+            int totalQuantity = 0;
+            double maxPrice = double.MinValue;
+            double minPrice = double.MaxValue;
+            int expensiveItemsCount = 0;
+            foreach (var p in products) {
+                totalSum += p.Value;
+                totalQuantity += 1;
+
+                if (p.Value > maxPrice) maxPrice = p.Value;
+                if (p.Value < minPrice) minPrice = p.Value;
+                if (p.Value > 500) expensiveItemsCount++;
+            }
+            double averagePrice = (double)totalSum / totalQuantity;
+
+            Console.WriteLine($"Загальна вартість складу: {totalSum}$");
+            Console.WriteLine($"Загальна кількість товарів: {totalQuantity}");
+            Console.WriteLine($"Середня ціна товару: {averagePrice}$");
+            Console.WriteLine($"Найдорожчий товар: {maxPrice}$");
+            Console.WriteLine($"Найдешевший товар: {minPrice}$");
+            Console.WriteLine($"Кількість дорогих товарів (>500$): {expensiveItemsCount}");
+
+            Console.ResetColor();
+            Console.WriteLine("\nНатисніть будь-яку клавішу, щоб повернутись...");
+            Console.ReadKey();
+        }
+        //static void Showproducts() {
+        //    Console.ForegroundColor = ConsoleColor.Cyan;
+        //    Console.WriteLine("========= Наші товари =========");
+        //    Console.WriteLine("1. Ноутбук");
+        //    Console.WriteLine("2. Смартфон");
+        //    Console.WriteLine("3. Планшет");
+        //    Console.WriteLine("4. Навушники");
+        //    Console.WriteLine("5. Телевізор");
+        //    Console.WriteLine("6. Вийти у головне меню");
+        //    Console.WriteLine("================================");
+        //    Console.ResetColor();
+
+        //    double choice = GetUserInput("Введіть число від 1-6: ");
+
+        //    switch (choice) {
+        //        case 1:
+        //            Console.WriteLine("Функція в розробці...");
+        //            Console.WriteLine("Натисніть будь-яку клавішу, щоб повернутися до головного меню.");
+        //            Console.ReadKey();
+        //            break;
+        //        case 2:
+        //            Console.WriteLine("Функція в розробці...");
+        //            Console.WriteLine("Натисніть будь-яку клавішу, щоб повернутися до головного меню.");
+        //            Console.ReadKey();
+        //            break;
+        //        case 3:
+        //            Console.WriteLine("Функція в розробці...");
+        //            Console.WriteLine("Натисніть будь-яку клавішу, щоб повернутися до головного меню.");
+        //            Console.ReadKey();
+        //            break;
+        //        case 4:
+        //            Console.WriteLine("Функція в розробці...");
+        //            Console.WriteLine("Натисніть будь-яку клавішу, щоб повернутися до головного меню.");
+        //            Console.ReadKey();
+        //            break;
+        //        case 5:
+        //            Console.WriteLine("Функція в розробці...");
+        //            Console.WriteLine("Натисніть будь-яку клавішу, щоб повернутися до головного меню.");
+        //            Console.ReadKey();
+        //            break;
+        //        case 6:
+        //            MainMenu();
+        //            break;
+        //        default:
+        //            Console.WriteLine("Невірний вибір. Будь ласка, спробуйте ще раз.");
+        //            MainMenu();
+        //            return;
+        //    }
+        //}
         static void ShowActionsAndDiscounts() {
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("====================================");
@@ -140,32 +278,27 @@
                     Console.WriteLine("Функція в розробці...");
                     Console.WriteLine("Натисніть будь-яку клавішу, щоб повернутися до головного меню.");
                     Console.ReadKey();
-                    MainMenu();
                     break;
                 case 2:
                     Console.WriteLine("Функція в розробці...");
                     Console.WriteLine("Натисніть будь-яку клавішу, щоб повернутися до головного меню.");
                     Console.ReadKey();
-                    MainMenu();
                     break;
                 case 3:
                     Console.WriteLine("Функція в розробці...");
                     Console.WriteLine("Натисніть будь-яку клавішу, щоб повернутися до головного меню.");
                     Console.ReadKey();
-                    MainMenu();
                     break;
                 case 4:
                     Console.WriteLine("Функція в розробці...");
                     Console.WriteLine("Натисніть будь-яку клавішу, щоб повернутися до головного меню.");
                     Console.ReadKey();
-                    MainMenu();
                     break;
                 case 5:
                     MainMenu();
                     break;
                 default:
                     Console.WriteLine("Невірний вибір. Будь ласка, спробуйте ще раз.");
-                    MainMenu();
                     return;
             }
         }
@@ -180,7 +313,11 @@
             Console.WriteLine("====================================");
             Console.WriteLine("\nНатисніть будь-яку клавішу, щоб повернутись...");
             Console.ReadKey();
-            MainMenu();
+        }
+        static void Exit() {
+            Console.WriteLine("Вихід з програми. До побачення!");
+            Console.ReadKey();
+            Environment.Exit(1);
         }
 
         static void OrderElectronics() {
@@ -199,20 +336,15 @@
             Console.WriteLine($"5. Телевізор, {valueTV} $");
 
             Console.Write("\nВиберіть кількість ноутбуків: ");
-            string? inputNotebook = Console.ReadLine();
-            int countNotebook = int.TryParse(inputNotebook, out int nb) ? nb : 0;
+            int countNotebook = (int)GetUserInput();
             Console.Write("Виберіть кількість смартфонів: ");
-            string? inputSmartphone = Console.ReadLine();
-            int countSmartphone = int.TryParse(inputSmartphone, out int sp) ? sp : 0;
+            int countSmartphone = (int)GetUserInput();
             Console.Write("Виберіть кількість планшетів: ");
-            string? inputTablet = Console.ReadLine();
-            int countTablet = int.TryParse(inputTablet, out int tb) ? tb : 0;
+            int countTablet = (int)GetUserInput();
             Console.Write("Виберіть кількість навушників: ");
-            string? inputHeadphone = Console.ReadLine();
-            int countHeadphone = int.TryParse(inputHeadphone, out int hp) ? hp : 0;
+            int countHeadphone = (int)GetUserInput(); ;
             Console.Write("Виберіть кількість телевізорів: ");
-            string? inputTV = Console.ReadLine();
-            int countTV = int.TryParse(inputTV, out int tv) ? tv : 0;
+            int countTV = (int)GetUserInput();
 
             int totalPriceNotebook = valueNotebook * countNotebook;
             Console.WriteLine($"\nВартість ноутбуків: {totalPriceNotebook} $");
@@ -238,11 +370,14 @@
             int discount;
             if (totalPrice >= 10000) {
                 discount = 20;
-            } else if (totalPrice >= 6000) {
+            }
+            else if (totalPrice >= 6000) {
                 discount = 15;
-            } else if (totalPrice >= 3000) {
+            }
+            else if (totalPrice >= 3000) {
                 discount = 10;
-            } else {
+            }
+            else {
                 discount = 0;
             }
             Console.ForegroundColor = ConsoleColor.Yellow;

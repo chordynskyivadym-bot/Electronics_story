@@ -1,13 +1,13 @@
 ﻿namespace electronics_store {
-     struct Product {
-        private static int Id_Start = 1;
-        public int Id { get; private set; }
+    public struct Product {
+        private static int Id_Start;
+        public int Id { get; set; }
         public string Name { get; set; } = "";
         public int Price { get; set; } = 0;
         public int Quantity { get; set; }
         public string Category { get; set; }
         public Product(string name, int price, int quantity, string category) {
-            Id = Id_Start++;
+            Id = ++Id_Start;
             Name = name;
             Price = price;
             Quantity = quantity;
@@ -18,6 +18,9 @@
         }
         public bool IsEmpty() {
             return String.IsNullOrWhiteSpace(Name);
+        }
+        public string ToCsv() {
+            return $"{Id},{Name},{Price},{Quantity},{Category}";
         }
     }
 }

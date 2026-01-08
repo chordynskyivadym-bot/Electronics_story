@@ -1,16 +1,21 @@
 ﻿using System.Text;
 
-namespace electronics_store {
-
-    internal class Program {
-        static void Main(string[] args) {
+namespace Electronics_store
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
             Console.OutputEncoding = Encoding.UTF8;
             Login();
             MainMenu();
         }
-        static void Login() {
+
+        private static void Login()
+        {
             bool authorization = false;
-            do {
+            do
+            {
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("=============================================");
@@ -21,27 +26,41 @@ namespace electronics_store {
                 Console.WriteLine("3. Вийти");
                 Console.ResetColor();
                 double choice = GetUserInput("Введіть 1-3: ");
-                switch (choice) {
+                switch (choice)
+                {
                     case 1: authorization = Authorization.Login(); break;
                     case 2: Authorization.Register(); break;
                     case 3: Exit(); break;
                     default: Console.WriteLine("Введіть коректне число"); break;
                 }
-                if (!authorization) {
+
+                if (!authorization)
+                {
                     Console.WriteLine("Натисніть будь-яку клавішу, щоб спробувати ще раз...");
                     Console.ReadKey();
                 }
-            } while (!authorization);
+            }
+            while (!authorization);
         }
-        static double GetUserInput(string text = "") {
-            try {
+
+        private static double GetUserInput(string text = "")
+        {
+            try
+            {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine(text);
-                double choice = double.Parse(Console.ReadLine());
+                string? input = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    Console.ResetColor();
+                    throw new FormatException("Ввід не може бути порожнім.");
+                }
+                double choice = double.Parse(input);
                 Console.ResetColor();
                 return choice;
             }
-            catch (FormatException) {
+            catch (FormatException)
+            {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Невірний формат вводу. Будь ласка, введіть число.");
                 Console.ResetColor();
@@ -49,9 +68,11 @@ namespace electronics_store {
             }
         }
 
-        static void MainMenu() {
+        static void MainMenu()
+        {
             bool exit = true;
-            while (exit) {
+            while (exit)
+            {
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("====================================");
@@ -67,7 +88,8 @@ namespace electronics_store {
                 Console.ResetColor();
 
                 double choice = GetUserInput("Введіть число від 1-6 ");
-                switch (choice) {
+                switch (choice)
+                {
                     case 1:
                         ProductsMenu();
                         break;
@@ -93,7 +115,8 @@ namespace electronics_store {
                 }
             }
         }
-        static void ProductsMenu() {
+        static void ProductsMenu()
+        {
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("========= Товари =========");
             Console.WriteLine("1. Додати товари");
@@ -128,31 +151,47 @@ namespace electronics_store {
                     return;
             }
         }
-        public static void AskForProduct() {
-            while (true) {
-                try {
+        public static void AskForProduct()
+        {
+            while (true)
+            {
+                try
+                {
                     Console.Write("Введіть назву продукта: ");
-                    string name = Console.ReadLine();
+                    string? name = Console.ReadLine();
+                    if (string.IsNullOrWhiteSpace(name))
+                    {
+                        Console.WriteLine("Назва продукту не може бути порожньою.");
+                        continue;
+                    }
                     double price = GetUserInput("Введіть ціну продукта");
                     int quantity = (int)GetUserInput("Введіть кількість продукта");
                     Console.Write("Введіть категорію продукта: ");
-                    string category = Console.ReadLine();
-                    var p = new Product {Name = name, Price = (int)price, Quantity = quantity, Category = category};
+                    string? category = Console.ReadLine();
+                    if (string.IsNullOrWhiteSpace(category))
+                    {
+                        Console.WriteLine("Категорія продукту не може бути порожньою.");
+                        continue;
+                    }
+                    var p = new Product { Name = name, Price = (int)price, Quantity = quantity, Category = category };
 
                     CSV.AppendProduct(p);
                     Console.WriteLine("Товар успішно додано!");
                 }
-                catch(FormatException) {
+                catch (FormatException)
+                {
                     Console.WriteLine("Помилка: Вводьте коректні числа!");
                 }
                 Console.WriteLine("================================");
                 Console.WriteLine("Чи хочете додати ще один продукт 1 - Yes, 0 - No");
                 int choice = (int)GetUserInput();
 
-                if (choice == 1) {
+                if (choice == 1)
+                {
                     Console.Clear();
                 }
-                else if (choice == 0) {
+                else if (choice == 0)
+                {
                     Console.WriteLine("Ваші продукти:");
                     ShowProducts();
                     break;
@@ -164,7 +203,15 @@ namespace electronics_store {
             Console.WriteLine("\n============= Пошук =============");
 
             Console.Write("Введіть назву або категорію для пошуку: ");
-            string query = Console.ReadLine();
+            string? query = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Пошуковий запит не може бути порожнім.");
+                Console.ResetColor();
+                Stop();
+                return;
+            }
             List<Product> products = CSV.LoadProducts();
 
             Console.WriteLine($"\nРезультати пошуку для: '{query}'");
@@ -174,14 +221,17 @@ namespace electronics_store {
 
             bool found = false;
 
-            foreach (var product in products) {
-                if (product.Name.ToLower().Contains(query.ToLower())) {
+            foreach (var product in products)
+            {
+                if (!string.IsNullOrEmpty(product.Name) && product.Name.ToLower().Contains(query.ToLower()))
+                {
                     product.ShowInfo();
                     found = true;
                 }
             }
 
-            if (!found) {
+            if (!found)
+            {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("На жаль, товарів не знайдено.");
             }
@@ -189,13 +239,15 @@ namespace electronics_store {
             Stop();
             Console.ResetColor();
         }
-        static void DeleteProduct() {
+        static void DeleteProduct()
+        {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("\n--- Видалення товару ---");
             ShowProducts();
             Console.WriteLine("================================");
-            int idToDelete = (int)GetUserInput("Введіть ID товару для видалення: ");
-            if (int.TryParse(Console.ReadLine(), out int id)) {
+            Console.WriteLine("Введіть ID товару для видалення: ");
+            if (int.TryParse(Console.ReadLine(), out int id))
+            {
                 List<Product> products = CSV.LoadProducts();
                 Product toRemove = products.FirstOrDefault(product => product.Id == id);
                 if (!toRemove.IsEmpty()) {
@@ -203,25 +255,29 @@ namespace electronics_store {
                     CSV.RewriteProducts(products);
                     Console.WriteLine("Товар успішно видалено.");
                 }
-                else {
+                else
+                {
                     Console.WriteLine("ID не знайдено.");
                 }
             }
             Stop();
             Console.ResetColor();
         }
-        static void EditProduct() {
+        static void EditProduct()
+        {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Write("\nВведіть ID товару для редагування: ");
-            if (int.TryParse(Console.ReadLine(), out int id)) {
+            if (int.TryParse(Console.ReadLine(), out int id))
+            {
                 List<Product> products = CSV.LoadProducts();
                 Product product = products.FirstOrDefault(x => x.Id == id);
 
-                if (!product.IsEmpty()) {
+                if (!product.IsEmpty())
+                {
                     Console.WriteLine($"Редагуємо: {product.Name}");
 
                     Console.Write("Нова назва: ");
-                    string value = Console.ReadLine();
+                    string? value = Console.ReadLine();
                     if (!string.IsNullOrEmpty(value)) product.Name = value;
 
                     Console.Write("Нова ціна: ");
@@ -234,18 +290,20 @@ namespace electronics_store {
 
                     Console.Write("Нова категорія: ");
                     value = Console.ReadLine();
-                    if (!string.IsNullOrEmpty(value) && int.TryParse(value, out int category)) product.Quantity = category;
+                    if (!string.IsNullOrEmpty(value)) product.Category = value;
 
                     CSV.RewriteProducts(products);
                     Console.WriteLine("Зміни збережено.");
                 }
-                else {
+                else
+                {
                     Console.WriteLine("Товар не знайдено.");
                 }
                 Stop();
-            }       
+            }
         }
-        static void ShowProducts() {
+        static void ShowProducts()
+        {
             Console.Clear();
             List<Product> products = CSV.LoadProducts();
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -255,17 +313,20 @@ namespace electronics_store {
             Console.WriteLine(new string('=', 75));
             Console.WriteLine($"| {"ID",-3} | {"Назва",-20} | {"Категорія",-12} | {"Ціна",14} | {"К-сть",9} |");
             Console.WriteLine(new string('=', 75));
-            foreach (var product in products) {
+            foreach (var product in products)
+            {
                 product.ShowInfo();
             }
             Console.WriteLine(new string('=', 75));
-            if (products.Count == 0) {
+            if (products.Count == 0)
+            {
                 Console.WriteLine("Список товарів порожній.");
             }
             Stop();
             Console.ResetColor();
         }
-        static void ShowStatistic() {
+        static void ShowStatistic()
+        {
             List<Product> products = CSV.LoadProducts();
             Console.ForegroundColor = ConsoleColor.Blue;
             if (products.Count == 0) {
@@ -291,7 +352,8 @@ namespace electronics_store {
             Stop();
         }
 
-        static void ShowActionsAndDiscounts() {
+        static void ShowActionsAndDiscounts()
+        {
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("====================================");
             Console.WriteLine("==========АКЦІЇ ТА ЗНИЖКИ===========");
@@ -330,7 +392,8 @@ namespace electronics_store {
             }
         }
 
-        static void ShowCustomerSupport() {
+        static void ShowCustomerSupport()
+        {
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("====================================");
             Console.WriteLine("========ПІДТРИМКА КЛІЄНТІВ==========");
@@ -340,17 +403,20 @@ namespace electronics_store {
             Console.WriteLine("====================================");
             Stop();
         }
-        static void Stop() {
+        static void Stop()
+        {
             Console.WriteLine("\nНатисніть будь-яку клавішу, щоб повернутись...");
             Console.ReadKey();
         }
-        static void Exit() {
+        static void Exit()
+        {
             Console.WriteLine("Вихід з програми. До побачення!");
             Console.ReadKey();
             Environment.Exit(1);
         }
 
-        static void OrderElectronics() {
+        static void OrderElectronics()
+        {
             int valueNotebook = 1000;
             int valueSmartphone = 500;
             int valueTablet = 700;

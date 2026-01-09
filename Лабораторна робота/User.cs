@@ -12,6 +12,10 @@ namespace Electronics_store
         public string PasswordHash;
         public int Id;
 
+        /// <summary>
+        /// Перетворює об'єкт товару у рядок формату CSV для запису у файл.
+        /// </summary>
+        /// <returns>Рядок, де поля розділені комами.</returns>
         public string ToCsv()
         {
             return $"{Id},{Email},{PasswordHash}";

@@ -14,13 +14,10 @@
   </PropertyGroup>
 
   <PropertyGroup>
-  	<!-- Увімкнути аналіз -->
   	<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-  
-  	<!-- Рівень серйозності попереджень -->
+
   	<AnalysisLevel>latest</AnalysisLevel>
-  
-  	<!-- Обробка попереджень як помилок (опціонально) -->
+
   	<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
 
@@ -29,18 +26,9 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-	 <AdditionalFiles Include="stylecop.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EditorConfigFiles Remove="C:\Users\user\source\repos\Лабораторна робота\Лабораторна робота\.editorconfig" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="C:\Users\user\source\repos\Лабораторна робота\Лабораторна робота\.editorconfig" />
+	  <None Include="C:\Users\user\source\repos\Лабораторна робота\Лабораторна робота\.editorconfig" />
+	  <EditorConfigFiles Remove="C:\Users\user\source\repos\Лабораторна робота\Лабораторна робота\.editorconfig" />
+	  <AdditionalFiles Include="stylecop.json" />
   </ItemGroup>
 
 </Project>

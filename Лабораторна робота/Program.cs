@@ -4,6 +4,10 @@ namespace Electronics_store
 {
     internal class Program
     {
+        /// <summary>
+        /// Функція входу в програму
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
@@ -11,6 +15,10 @@ namespace Electronics_store
             MainMenu();
         }
 
+        /// <summary>
+        /// Відображає меню авторизації та обробляє вибір користувача (Вхід, Реєстрація, Вихід).
+        /// Працює в циклі до успішної авторизації.
+        /// </summary>
         private static void Login()
         {
             bool authorization = false;
@@ -43,6 +51,11 @@ namespace Electronics_store
             while (!authorization);
         }
 
+        /// <summary>
+        /// Зчитує числове значення, введене користувачем, із перевіркою формату.
+        /// </summary>
+        /// <param name="text">Текст підказки, що виводиться перед введенням (необов'язковий)</param>
+        /// <returns>Введене користувачем число типу double.</returns>
         private static double GetUserInput(string text = "")
         {
             try
@@ -68,6 +81,10 @@ namespace Electronics_store
             }
         }
 
+        /// <summary>
+        /// Відображає головне меню магазину після успішної авторизації.
+        /// Надає доступ до товарів, статистики, замовлень та інших розділів.
+        /// </summary>
         static void MainMenu()
         {
             bool exit = true;
@@ -115,6 +132,11 @@ namespace Electronics_store
                 }
             }
         }
+
+        /// <summary>
+        /// Підменю для керування товарами.
+        /// Дозволяє додавати, переглядати, шукати, видаляти та редагувати товари.
+        /// </summary>
         static void ProductsMenu()
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -151,6 +173,11 @@ namespace Electronics_store
                     return;
             }
         }
+
+        /// <summary>
+        /// Інтерактивна функція для додавання нового товару.
+        /// Запитує у користувача дані (назву, ціну, кількість, категорію) та зберігає їх у файл.
+        /// </summary>
         public static void AskForProduct()
         {
             while (true)
@@ -198,6 +225,11 @@ namespace Electronics_store
                 }
             }
         }
+
+        /// <summary>
+        /// Здійснює пошук товарів за назвою або категорією.
+        /// Виводить результати у вигляді таблиці.
+        /// </summary>
         static void SearchProduct() {
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("\n============= Пошук =============");
@@ -239,6 +271,10 @@ namespace Electronics_store
             Stop();
             Console.ResetColor();
         }
+
+        /// <summary>
+        /// Видаляє товар із бази даних за його унікальним ідентифікатором (ID).
+        /// </summary>
         static void DeleteProduct()
         {
             Console.ForegroundColor = ConsoleColor.Red;
@@ -263,6 +299,10 @@ namespace Electronics_store
             Stop();
             Console.ResetColor();
         }
+
+        /// <summary>
+        /// Дозволяє змінити параметри існуючого товару (назву, ціну, кількість або категорію) за його ID.
+        /// </summary>
         static void EditProduct()
         {
             Console.ForegroundColor = ConsoleColor.Green;
@@ -302,6 +342,10 @@ namespace Electronics_store
                 Stop();
             }
         }
+
+        /// <summary>
+        /// Виводить на екран повний список усіх товарів у вигляді відформатованої таблиці.
+        /// </summary>
         static void ShowProducts()
         {
             Console.Clear();
@@ -325,6 +369,11 @@ namespace Electronics_store
             Stop();
             Console.ResetColor();
         }
+
+        /// <summary>
+        /// Обчислює та відображає статистичні дані магазину: загальну кількість товарів,
+        /// сумарну вартість складу, середню ціну, а також найдорожчий та найдешевший товари.
+        /// </summary>
         static void ShowStatistic()
         {
             List<Product> products = CSV.LoadProducts();
@@ -352,6 +401,9 @@ namespace Electronics_store
             Stop();
         }
 
+        /// <summary>
+        /// Відображає поточні акції та знижки магазину.
+        /// </summary>
         static void ShowActionsAndDiscounts()
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -392,6 +444,9 @@ namespace Electronics_store
             }
         }
 
+        /// <summary>
+        /// Відображає контактну інформацію служби підтримки клієнтів.
+        /// </summary>
         static void ShowCustomerSupport()
         {
             Console.ForegroundColor = ConsoleColor.Magenta;
@@ -403,11 +458,19 @@ namespace Electronics_store
             Console.WriteLine("====================================");
             Stop();
         }
+
+        /// <summary>
+        /// Функція паузи для очікування натискання клавіші користувачем.
+        /// </summary>
         static void Stop()
         {
             Console.WriteLine("\nНатисніть будь-яку клавішу, щоб повернутись...");
             Console.ReadKey();
         }
+
+        /// <summary>
+        /// Функція виходу з програми з повідомленням.
+        /// </summary>
         static void Exit()
         {
             Console.WriteLine("Вихід з програми. До побачення!");
@@ -415,6 +478,10 @@ namespace Electronics_store
             Environment.Exit(1);
         }
 
+        /// <summary>
+        /// Симулює процес оформлення замовлення.
+        /// Дозволяє обрати кількість техніки, розраховує загальну суму та автоматично нараховує знижку (10%, 15% або 20%).
+        /// </summary>
         static void OrderElectronics()
         {
             int valueNotebook = 1000;

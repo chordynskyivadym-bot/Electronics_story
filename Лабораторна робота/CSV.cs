@@ -9,6 +9,12 @@ namespace Electronics_store
         private const string ProductHeader = "Id,Name,Price,Quantity,Category";
         private const string UserHeader = "Id,Username,Password";
 
+        /// <summary>
+        /// Зчитує список товарів із файлу products.csv.
+        /// Парсить кожен рядок файлу та перетворює його на об'єкт структури Product.
+        /// Обробляє помилки пошкоджених рядків.
+        /// </summary>
+        /// <returns>Повертає список об'єктів Product.</returns>
         public static List<Product> LoadProducts()
         {
             var list = new List<Product>();
@@ -66,12 +72,21 @@ namespace Electronics_store
             return list;
         }
 
+        /// <summary>
+        /// Додає новий товар у кінець файлу products.csv, автоматично генеруючи для нього новий ID.
+        /// </summary>
+        /// <param name="p">Об'єкт товару, який потрібно зберегти.</param>
         public static void AppendProduct(Product p)
         {
             p.Id = GetNextId(ProductsFile);
             File.AppendAllText(ProductsFile, p.ToCsv() + Environment.NewLine, Encoding.UTF8);
         }
 
+        /// <summary>
+        /// Повністю перезаписує файл products.csv оновленим списком товарів.
+        /// Використовується після видалення або редагування записів.
+        /// </summary>
+        /// <param name="products">Актуальний список товарів.</param>
         public static void RewriteProducts(List<Product> products)
         {
             var sb = new StringBuilder();
@@ -84,6 +99,10 @@ namespace Electronics_store
             File.WriteAllText(ProductsFile, sb.ToString(), Encoding.UTF8);
         }
 
+        /// <summary>
+        /// Завантажує список користувачів із файлу users.csv.
+        /// </summary>
+        /// <returns>Повертає новий відредагований список.</returns>
         public static List<User> LoadUsers()
         {
             var list = new List<User>();
@@ -121,12 +140,21 @@ namespace Electronics_store
             return list;
         }
 
+        /// <summary>
+        /// Додає нового користувача у файл users.csv з унікальним ID.
+        /// </summary>
+        /// <param name="user"></param>
         public static void AppendUser(User user)
         {
             user.Id = GetNextId(UsersFile);
             File.AppendAllText(UsersFile, user.ToCsv() + Environment.NewLine, Encoding.UTF8);
         }
 
+        /// <summary>
+        /// Генерує наступний унікальний ID для запису на основі максимального існуючого ID у файлі.
+        /// </summary>
+        /// <param name="filePath">Шлях до файлу (products.csv або users.csv).</param>
+        /// <returns>Новий ідентифікатор.</returns>
         private static int GetNextId(string filePath)
         {
             if (!File.Exists(filePath))

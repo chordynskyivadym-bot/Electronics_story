@@ -5,6 +5,10 @@ namespace Electronics_store
 {
     internal class Authorization
     {
+        /// <summary>
+        /// Реєструє нового користувача в системі.
+        /// Перевіряє унікальність Email та зберігає хеш пароля у файл users.csv.
+        /// </summary>
         public static void Register()
         {
             Console.WriteLine("\n--- РЕЄСТРАЦІЯ ---");
@@ -49,6 +53,10 @@ namespace Electronics_store
             Console.ResetColor();
         }
 
+        /// <summary>
+        /// Перевіряє облікові дані користувача (Email та пароль) для входу в систему.
+        /// </summary>
+        /// <returns>Повертає true, якщо вхід успішний, та false, якщо дані невірні.</returns>
         public static bool Login()
         {
             Console.WriteLine("\n--- АВТОРИЗАЦІЯ ---");
@@ -95,6 +103,12 @@ namespace Electronics_store
             }
         }
 
+        /// <summary>
+        /// Хешує пароль користувача, використовуючи алгоритм SHA256.
+        /// Забезпечує безпеку збереження даних, перетворюючи пароль у незворотний рядок.
+        /// </summary>
+        /// <param name="password">Пароль у відкритому вигляді.</param>
+        /// <returns>Повертає захешований пароль у форматі Base64.</returns>
         private static string HashPassword(string password)
         {
             using (var sha256 = SHA256.Create())
